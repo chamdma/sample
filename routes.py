@@ -7,9 +7,9 @@ router = APIRouter()
 
 
 @router.post("/create")
-async def create_user(request: Request,
+ async def create_user(request: Request,
     username: str = Body(...),
-    email: str = Body(...),
+  email: str = Body(...),
     password: str = Body(...),
     age: int = Body(...)
 ):
@@ -79,7 +79,7 @@ async def create_user(request: Request,
         "data": user_data
     }
 
-@router.post("/update")
+@router.post("/update")                    #changed email
 async def update_user(request: Request,
     user_id: str = Body(...),
     username: str = Body(None),
@@ -169,7 +169,7 @@ async def delete_user(request: Request, user_id: str = Body(..., embed=True)):
 
 
 
-@router.post("/list")
+@router.post("/list")                   #changed list
 async def list_users(request: Request):
     users = User.objects.all()  
 
