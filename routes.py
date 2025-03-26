@@ -6,7 +6,7 @@ from utils import create_access_token
 router = APIRouter()
 
 
-@router.post("/create")
+@router.post("/create")                       #changed api
  async def create_user(request: Request,
     username: str = Body(...),
   email: str = Body(...),
