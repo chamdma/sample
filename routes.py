@@ -136,9 +136,8 @@ async def update_user(request: Request,
 
 
 
-
 @router.delete("/users")
-async def delete_user(user_id: str = Body(..., embed=True)):  
+async def delete_user(request: Request, user_id: str = Body(..., embed=True)):  
     try:
         user = User.objects(_id=user_id).first()
 
@@ -171,7 +170,7 @@ async def delete_user(user_id: str = Body(..., embed=True)):
 
 
 @router.post("/list")
-async def list_users(request: Request, body: dict = Body(...)):
+async def list_users(request: Request):
     users = User.objects.all()  
 
     if not users:
@@ -184,7 +183,7 @@ async def list_users(request: Request, body: dict = Body(...)):
 
     user_list = []
     for user in users:
-        user_data = user.to_mongo().to_dict()
+        user_data = user.to_mongo()
         user_data["_id"] = str(user_data["_id"])
         user_list.append(user_data)
 
