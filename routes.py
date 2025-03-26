@@ -83,7 +83,6 @@ async def create_user(request: Request,
 async def update_user(request: Request,
     user_id: str = Body(...),
     username: str = Body(None),
-    email: str = Body(None),
     password: str = Body(None),
     age: int = Body(None),
 ):
@@ -104,8 +103,6 @@ async def update_user(request: Request,
         update_data = {}
         if username:
             update_data["set__username"] = username
-        if email:
-            update_data["set__email"] = email
         if password:
             update_data["set__password"] = password
         if age is not None:
