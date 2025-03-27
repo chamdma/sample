@@ -1,5 +1,4 @@
 from fastapi import FastAPI, Request, APIRouter, Depends,Body,Header
-from bson import ObjectId 
 from models import User
 from utils import create_access_token
 
@@ -157,31 +156,29 @@ async def delete_user(request: Request, user_id: str = Body(..., embed=True)):
 
 
 
-
-
-
-
-@router.post("/list")                   #changed list
+@router.post("/list")
 async def list_users(request: Request):
-    users = User.objects.all()  
+    try:
+    
+       
+        users = list(User.objects.all())  
 
-    if not users:
+        user_list = []
+        for user in users:
+            user_data = user.to_mongo()  
+            user_data["_id"] = str(user_data["_id"])  
+            user_list.append(user_data)
+
         return {
             "status_code": 200,
-            "description": "No users found",
+            "description": "listed successfully",
             "status": True,
-            "data": []
+            "data": user_list
+}
+
+    except Exception as e:
+        return {
+            "status_code": 500,
+            "description": f"Error listing user: {str(e)}",
+            "status": False
         }
-
-    user_list = []
-    for user in users:
-        user_data = user.to_mongo()
-        user_data["_id"] = str(user_data["_id"])
-        user_list.append(user_data)
-
-    return {
-        "status_code": 200,
-        "description": "Users retrieved successfully",
-        "status": True,
-        "data": user_list,
-    }
