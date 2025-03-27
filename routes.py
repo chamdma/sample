@@ -33,15 +33,6 @@ router = APIRouter()
         }
 
    
-    if User.objects(email=data["email"]).first():
-        return {
-            "status_code": 400,
-            "description": "Email already created",
-            "status": False,
-            "data": [],
-        }
-
-   
     if User.objects(username=data["username"]).first():
         return {
             "status_code": 400,
@@ -88,10 +79,10 @@ async def update_user(request: Request,
 ):
     try:
         
-        existing_user = User.objects(_id=ObjectId(user_id)).first()
+        user = User.objects(id=user_id).first()
 
 
-        if not existing_user:
+        if not user:
             return {
                 "status_code": 404,
                 "description": "User not found",
@@ -116,8 +107,8 @@ async def update_user(request: Request,
             }
 
       
-        existing_user.update(**update_data)
-        existing_user.reload()  
+        user.update(**update_data)
+        user.reload()  
 
         return {
             "status_code": 200,
@@ -139,7 +130,8 @@ async def update_user(request: Request,
 @router.delete("/users")
 async def delete_user(request: Request, user_id: str = Body(..., embed=True)):  
     try:
-        user = User.objects(_id=user_id).first()
+        user = User.objects(id=user_id).first()
+
 
         if not user:
             return {

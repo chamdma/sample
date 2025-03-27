@@ -19,6 +19,6 @@ class User(Document):
     email = StringField(required=True,)
     password = StringField(required=True)
     age = IntField(required=True)
-    _id = ObjectIdField(primary_key=True)
+   # _id = ObjectIdField(primary_key=True)
 
 
